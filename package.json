@@ -4,11 +4,12 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "start": "lerna run start",
+    "build": "lerna run build --scope=homedesignsystem"
+  },
   "dependencies": {},
   "devDependencies": {
     "lerna": "^8.1.2"
-  },
-  "scripts": {
-    "start": "lerna run start"
   }
 }

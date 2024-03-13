@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import {Button} from 'homedesignsystem';
-
 function App() {
   return (
     <div className="App">
@@ -16,11 +15,10 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Home Pro
+          Learn React
         </a>
-        <Button color="blue"> Click to get in pro</Button>
+        <Button>Click me</Button>
       </header>
-      
     </div>
   );
 }
