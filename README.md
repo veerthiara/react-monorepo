@@ -81,7 +81,7 @@ Follow these steps to initialize lerna monorepo
         ```
        homedesignsystem/src/compoments/index.ts code:
         ```
-          export * from './components/Button';
+          export * from './components/Button/Button';
         ```
         
      * Add following scripts to homedesignsystem package.json and also add/change main, types values
@@ -146,6 +146,11 @@ Follow these steps to initialize lerna monorepo
       },
     ```
 11. First build the homedesign app using `npm run build` in root directory & then run `npm run start` which will run all apps that have a start script.
+
+You should be able to see the button in Homepro or homeowner depending on where it was used.
+
+<img width="667" alt="Screenshot 2024-03-13 at 10 02 34 AM" src="https://github.com/veerthiara/react-monorepo/assets/23288822/77108ff1-5c99-460e-b285-2672c88aab41">
+
 
 
 
