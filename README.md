@@ -23,7 +23,7 @@ Follow these steps to initialize lerna monorepo
 7. Now add files to **homedesignsystem** package such that it has a common component being used by **homepro** and **homeowner**. eg for this project ran following command 
     * `npm init -y`
     * `npm install --save react react-dom styled-components sb`
-    * `npm install --save-dev typescript @babel/preset-typescript @types/react @types/react-dom @babel/cli @babel/core @babel/preset-env @babel/preset-react webpack webpack-cli webpack-dev-server babel-loader style-loader css-loader`
+    * `npm install --save-dev typescript @babel/preset-typescript @types/react @types/react-dom @babel/cli @babel/core @babel/preset-env @babel/preset-react`
     * Create .babelrc file and paste following 
       ```
         {
@@ -34,65 +34,29 @@ Follow these steps to initialize lerna monorepo
       ```
         {
           "compilerOptions": {
-            "outDir": "./dist/",
-            "noImplicitAny": true,
-            "module": "es6",
+            "outDir": "./dist",
             "target": "es5",
+            "lib": ["dom", "dom.iterable", "es2015", "es2016", "es2017"],
+            "module": "esnext",
             "jsx": "react",
+            "moduleResolution": "node",
+            "allowSyntheticDefaultImports": true,
+            "esModuleInterop": true,
+            "skipLibCheck": true,
+            "forceConsistentCasingInFileNames": true,
+            "isolatedModules": false,
+            "declaration": true,
+            "sourceMap": true,
             "allowJs": true,
-            "moduleResolution": "node"
+        
           },
-          "include": ["src/**/*"]
+          "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+          "exclude": ["node_modules"],
         }
       ```
-    * Create a `webpack.config.js` which looks like following 
-      ```
-      const path = require("path");
-      module.exports = {
-        entry: "./src/index.ts", // Your library's entry point
-        output: {
-          path: path.resolve(__dirname, "dist"),
-          filename: "homedesignsystem.js",
-          library: "homedesignsystem", // Your library's name, this will be the global variable that users will use to import and access it
-          libraryTarget: "umd", // This makes your library usable in various environments
-        },
-        module: {
-          rules: [
-            {
-              test: /\.(js|jsx|ts|tsx)$/,
-              exclude: /node_modules/,
-              use: {
-                loader: "babel-loader", // Use Babel loader for JS files
-                options: {
-                  presets: [
-                    "@babel/preset-env", // For modern JavaScript features
-                    "@babel/preset-react", // For JSX
-                    "@babel/preset-typescript", // For TypeScript
-                  ],
-                },
-              },
-            },
-            {
-              test: /\.css$/,
-              use: ["style-loader", "css-loader"], // Use these loaders for CSS files
-            },
-            // Add more loaders here for other file types (e.g., images, fonts)
-          ],
-        },
-        resolve: {
-          extensions: [".js", ".jsx", ".ts", ".tsx"],
-        },
-        // Optionally configure the webpack-dev-server
-        devServer: {
-          contentBase: path.join(__dirname, "dist"),
-          compress: true,
-          port: 9000, // Default port for webpack-dev-server
-        },
-      };
-      ```
-     * Now create sample button and table that can be used in homepro and homeowner project. To do this create files so that the homedesignsystem has following structure
+    * Now create sample button and table that can be used in homepro and homeowner project. To do this create files so that the homedesignsystem has following structure
         ```
-          my-component-library/
+          homedesignsystem/
             src/
               components/
                 Button/
@@ -100,49 +64,66 @@ Follow these steps to initialize lerna monorepo
                 Table/
                   Table.tsx
               index.ts
-            .storybook/
-            webpack.config.js
             tsconfig.json
             package.json
         ```
-     * Add following scripts to homedesignsystem package.json
+        homedesignsystem/src/compoments/Button/Button.tsx code:
+        ```
+          import React from 'react';
+          interface ButtonProps {
+            children: React.ReactNode;
+            onClick?: () => void;
+          }
+          
+          export const Button: React.FC<ButtonProps> = ({ children, onClick }) => (
+            <button onClick={onClick}>{children} home design system</button>
+          );
+        ```
+       homedesignsystem/src/compoments/index.ts code:
+        ```
+          export * from './components/Button';
+        ```
+        
+     * Add following scripts to homedesignsystem package.json and also add/change main, types values
         ```
           "scripts": {
-            "build": "webpack --mode production",
-            "start": "webpack-dev-server --mode development --open"
+            "build": "rm -rf dist/ && tsc"
           }
         ```
-        Aslo change the main to `src/index.ts`
-     *
-     * `npx sb init`
-
+        ```
+          "main": "dist/index.js",
+          "types": "dist/index.d.ts",
+        ```
+    
 7. The common component package i.e **homedesignsystem** package.json will look something like this
     ```
     {
-      "name": "homedesignsystem",
-      "version": "1.0.0",
-      "description": "",
-      "main": "lib/index.js",
-      "scripts": {
-        "build": "babel src --out-dir lib --copy-files",
-        "test": "echo \"Error: no test specified\" && exit 1"
-      },
-      "keywords": [],
-      "author": "",
-      "license": "ISC",
-      "dependencies": {
-        "react": "^18.2.0",
-        "styled-components": "^6.1.8"
-      },
-      "devDependencies": {
-        "@babel/cli": "^7.23.9",
-        "@babel/core": "^7.24.0",
-        "@babel/preset-env": "^7.24.0",
-        "@babel/preset-react": "^7.23.3"
-      }
+        "name": "homedesignsystem",
+        "version": "1.0.0",
+        "description": "",
+        "main": "dist/index.js",
+        "types": "dist/index.d.ts",
+        "scripts": {
+          "build": "rm -rf dist/ && tsc"
+        },
+        "keywords": [],
+        "author": "",
+        "license": "ISC",
+        "devDependencies": {
+          "@babel/cli": "^7.23.9",
+          "@babel/core": "^7.24.0",
+          "@babel/preset-env": "^7.24.0",
+          "@babel/preset-react": "^7.23.3",
+          "@babel/preset-typescript": "^7.23.3",
+          "@types/react": "^18.2.65",
+          "@types/react-dom": "^18.2.21",
+          "typescript": "^5.4.2"
+        },
+        "dependencies": {
+          "react": "^18.2.0"
+        }
     }
     ```
-    `main: "lib/index.js"` specifies the file from where all exported components will be available which is generated after running script build.
 8. To use the homedesignsystem package in homepro or homeowner modify its **package.json** to have **homedesignsystem** as dependency. eg this is how homepro package.json will look like
     ```
       "dependencies": {
@@ -160,8 +141,11 @@ Follow these steps to initialize lerna monorepo
 10. Add following to root package.json 
     ```
       "scripts": {
-        "start": "lerna run start"
+        "start": "lerna run start",
+        "build": "lerna run build --scope=homedesignsystem"
       },
     ```
-11. To start all apps run npm run start
+11. First build the homedesign app using `npm run build` in root directory & then run `npm run start` which will run all apps that have a start script.
+
+
 
