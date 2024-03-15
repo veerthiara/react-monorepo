@@ -124,7 +124,7 @@ Follow these steps to initialize lerna monorepo
         }
     }
     ```
-8. To use the homedesignsystem package in homepro or homeowner modify its **package.json** to have **homedesignsystem** as dependency. eg this is how homepro package.json will look like
+8. To use the homedesignsystem package in homepro or homeowner modify its **package.json** to have **homedesignsystem** as dependency. eg this is how homepro package.json will look like. **Note: Even if we do not specify homedesignsystem in package.json it can stil be used in a package because its installed as a dependency and hoisted to root node_modules as a feature of monorepo thus making it available for other packages to use as well.**
     ```
       "dependencies": {
       "@testing-library/jest-dom": "^5.17.0",
